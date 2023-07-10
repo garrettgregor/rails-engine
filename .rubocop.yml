@@ -1,0 +1,20 @@
+require: rubocop-rails
+
+Rails/FindBy:
+  Exclude:
+    - app/helpers/application_helper.rb
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context']
+
+Naming/VariableNumber:
+  IgnoredMethods: ['describe', 'context', 'it']
+
+AllCops:
+  Exclude:
+    - 'db/seeds.rb'
+    - 'db/schema.rb'
+    - 'bin/*'

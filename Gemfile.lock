@@ -243,7 +243,6 @@ DEPENDENCIES
   bootsnap
   byebug
   debug
-  factory_bot (~> 6.2)
   factory_bot_rails
   faker
   jsonapi-serializer

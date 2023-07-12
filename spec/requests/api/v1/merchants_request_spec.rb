@@ -16,7 +16,6 @@ describe "Merchants API" do
     merchants.each do |merchant|
       expect(merchant).to have_key(:id)
       expect(merchant[:id].to_i).to be_an(Integer)
-      # ^^Question: Should this be written another way? Should this be coming back as an integer after serializing?
 
       expect(merchant).to have_key(:type)
       expect(merchant[:type]).to eq("merchant")
@@ -26,17 +25,6 @@ describe "Merchants API" do
 
       expect(merchant[:attributes]).to have_key(:name)
       expect(merchant[:attributes][:name]).to be_a(String)
-
-      ## Question: should we be enabling relationships and foregoing the postman tests?
-      ## Enabling relationships for merchant and item serializer will make these pass:
-      # expect(merchant).to have_key(:relationships)
-      # expect(merchant[:relationships]).to be_a(Hash)
-
-      # expect(merchant[:relationships]).to have_key(:items)
-      # expect(merchant[:relationships][:items]).to be_a(Hash)
-
-      # expect(merchant[:relationships][:items]).to have_key(:data)
-      # expect(merchant[:relationships][:items][:data]).to be_an(Array)
     end
   end
 
@@ -61,15 +49,6 @@ describe "Merchants API" do
 
     expect(merchant[:attributes]).to have_key(:name)
     expect(merchant[:attributes][:name]).to be_a(String)
-
-    # expect(merchant).to have_key(:relationships)
-    # expect(merchant[:relationships]).to be_a(Hash)
-
-    # expect(merchant[:relationships]).to have_key(:items)
-    # expect(merchant[:relationships][:items]).to be_a(Hash)
-
-    # expect(merchant[:relationships][:items]).to have_key(:data)
-    # expect(merchant[:relationships][:items][:data]).to be_an(Array)
   end
 
   it "can return a specific merchant's items" do
@@ -105,15 +84,6 @@ describe "Merchants API" do
       expect(item[:attributes]).to have_key(:merchant_id)
       expect(item[:attributes][:merchant_id]).to be_an(Integer)
       expect(item[:attributes][:merchant_id]).to eq(merchant.id)
-
-      # expect(merchant).to have_key(:relationships)
-      # expect(merchant[:relationships]).to be_a(Hash)
-
-      # expect(merchant[:relationships]).to have_key(:items)
-      # expect(merchant[:relationships][:items]).to be_a(Hash)
-
-      # expect(merchant[:relationships][:items]).to have_key(:data)
-      # expect(merchant[:relationships][:items][:data]).to be_an(Array)
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Merchant < ApplicationRecord
-  # validates_presence_of :name
+  validates :name, presence: true
 
   has_many :items
   # has_many :invoice_items, through: :items

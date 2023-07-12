@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe "Merchants API" do
-  it "sends a list of merchants" do
+describe 'Merchants API' do
+  it 'sends a list of merchants' do
     create_list(:merchant, 3)
 
     get api_v1_merchants_path
@@ -18,7 +20,7 @@ describe "Merchants API" do
       expect(merchant[:id].to_i).to be_an(Integer)
 
       expect(merchant).to have_key(:type)
-      expect(merchant[:type]).to eq("merchant")
+      expect(merchant[:type]).to eq('merchant')
 
       expect(merchant).to have_key(:attributes)
       expect(merchant[:attributes]).to be_a(Hash)
@@ -28,7 +30,7 @@ describe "Merchants API" do
     end
   end
 
-  it "can return a one merchant" do
+  it 'can return a one merchant' do
     merchant = create(:merchant)
 
     get api_v1_merchant_path(merchant)
@@ -42,7 +44,7 @@ describe "Merchants API" do
     expect(merchant[:id].to_i).to be_an(Integer)
 
     expect(merchant).to have_key(:type)
-    expect(merchant[:type]).to eq("merchant")
+    expect(merchant[:type]).to eq('merchant')
 
     expect(merchant).to have_key(:attributes)
     expect(merchant[:attributes]).to be_a(Hash)
@@ -67,7 +69,7 @@ describe "Merchants API" do
       expect(item[:id].to_i).to be_an(Integer)
 
       expect(item).to have_key(:type)
-      expect(item[:type]).to eq("item")
+      expect(item[:type]).to eq('item')
 
       expect(item).to have_key(:attributes)
       expect(item[:attributes]).to be_a(Hash)

@@ -73,4 +73,20 @@ describe 'Items API' do
     expect(item[:attributes][:merchant_id]).to be_an(Integer)
     expect(item[:attributes][:merchant_id]).to eq(merchant.id)
   end
+
+  context 'sad path' do
+    it 'bad integer id returns 404 for wrong id getting an item' do
+      get api_v1_item_path(120_987_234_587_090)
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  context 'edge case' do
+    it 'bad integer id returns 404 for invalid string getting an item' do
+      get api_v1_item_path('hello')
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end

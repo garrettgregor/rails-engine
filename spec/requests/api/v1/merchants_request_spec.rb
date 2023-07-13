@@ -3,19 +3,44 @@
 require 'rails_helper'
 
 describe 'Merchants API' do
-  it 'sends a list of merchants' do
-    create_list(:merchant, 3)
+  context 'happy path' do
+    it 'sends a list of merchants' do
+      create_list(:merchant, 3)
 
-    get api_v1_merchants_path
+      get api_v1_merchants_path
 
-    expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:ok)
 
-    merchants_data = JSON.parse(response.body, symbolize_names: true)
-    merchants = merchants_data[:data]
+      merchants_data = JSON.parse(response.body, symbolize_names: true)
+      merchants = merchants_data[:data]
 
-    expect(merchants.size).to eq(3)
+      expect(merchants.size).to eq(3)
 
-    merchants.each do |merchant|
+      merchants.each do |merchant|
+        expect(merchant).to have_key(:id)
+        expect(merchant[:id].to_i).to be_an(Integer)
+
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to eq('merchant')
+
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
+
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_a(String)
+      end
+    end
+
+    it 'can return a one merchant' do
+      merchant = create(:merchant)
+
+      get api_v1_merchant_path(merchant)
+
+      expect(response).to have_http_status(:ok)
+
+      merchant_data = JSON.parse(response.body, symbolize_names: true)
+      merchant = merchant_data[:data]
+
       expect(merchant).to have_key(:id)
       expect(merchant[:id].to_i).to be_an(Integer)
 
@@ -28,64 +53,58 @@ describe 'Merchants API' do
       expect(merchant[:attributes]).to have_key(:name)
       expect(merchant[:attributes][:name]).to be_a(String)
     end
+
+    it "can return a specific merchant's items" do
+      merchant = create(:merchant)
+      create_list(:item, 5, merchant_id: merchant.id)
+
+      get api_v1_merchant_items_path(merchant)
+
+      expect(response).to have_http_status(:ok)
+
+      merchant_items_data = JSON.parse(response.body, symbolize_names: true)
+      items = merchant_items_data[:data]
+
+      items.each do |item|
+        expect(item).to have_key(:id)
+        expect(item[:id].to_i).to be_an(Integer)
+
+        expect(item).to have_key(:type)
+        expect(item[:type]).to eq('item')
+
+        expect(item).to have_key(:attributes)
+        expect(item[:attributes]).to be_a(Hash)
+
+        expect(item[:attributes]).to have_key(:name)
+        expect(item[:attributes][:name]).to be_a(String)
+
+        expect(item[:attributes]).to have_key(:description)
+        expect(item[:attributes][:description]).to be_a(String)
+
+        expect(item[:attributes]).to have_key(:unit_price)
+        expect(item[:attributes][:unit_price]).to be_a(Float)
+
+        expect(item[:attributes]).to have_key(:merchant_id)
+        expect(item[:attributes][:merchant_id]).to be_an(Integer)
+        expect(item[:attributes][:merchant_id]).to eq(merchant.id)
+      end
+    end
   end
 
-  it 'can return a one merchant' do
-    merchant = create(:merchant)
+  context 'sad path' do
+    it 'bad integer id returns 404 for getting a merchant' do
+      get api_v1_merchant_path(120_987_234_587_090)
 
-    get api_v1_merchant_path(merchant)
+      expect(response).to have_http_status(:not_found)
+    end
 
-    expect(response).to have_http_status(:ok)
+    it "bad integer id returns 404 for getting a merchant's items" do
+      merchant = create(:merchant)
+      create_list(:item, 5, merchant_id: merchant.id)
 
-    merchant_data = JSON.parse(response.body, symbolize_names: true)
-    merchant = merchant_data[:data]
+      get api_v1_merchant_items_path(120_987_234_587_090)
 
-    expect(merchant).to have_key(:id)
-    expect(merchant[:id].to_i).to be_an(Integer)
-
-    expect(merchant).to have_key(:type)
-    expect(merchant[:type]).to eq('merchant')
-
-    expect(merchant).to have_key(:attributes)
-    expect(merchant[:attributes]).to be_a(Hash)
-
-    expect(merchant[:attributes]).to have_key(:name)
-    expect(merchant[:attributes][:name]).to be_a(String)
-  end
-
-  it "can return a specific merchant's items" do
-    merchant = create(:merchant)
-    create_list(:item, 5, merchant_id: merchant.id)
-
-    get api_v1_merchant_items_path(merchant)
-
-    expect(response).to have_http_status(:ok)
-
-    merchant_items_data = JSON.parse(response.body, symbolize_names: true)
-    items = merchant_items_data[:data]
-
-    items.each do |item|
-      expect(item).to have_key(:id)
-      expect(item[:id].to_i).to be_an(Integer)
-
-      expect(item).to have_key(:type)
-      expect(item[:type]).to eq('item')
-
-      expect(item).to have_key(:attributes)
-      expect(item[:attributes]).to be_a(Hash)
-
-      expect(item[:attributes]).to have_key(:name)
-      expect(item[:attributes][:name]).to be_a(String)
-
-      expect(item[:attributes]).to have_key(:description)
-      expect(item[:attributes][:description]).to be_a(String)
-
-      expect(item[:attributes]).to have_key(:unit_price)
-      expect(item[:attributes][:unit_price]).to be_a(Float)
-
-      expect(item[:attributes]).to have_key(:merchant_id)
-      expect(item[:attributes][:merchant_id]).to be_an(Integer)
-      expect(item[:attributes][:merchant_id]).to eq(merchant.id)
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

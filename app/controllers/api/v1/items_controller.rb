@@ -23,8 +23,11 @@ module Api
 
       def update
         item_to_update = Item.find(params[:id])
-        item_to_update.update(item_params)
-        render json: ItemSerializer.new(item_to_update), status: :accepted
+        if item_to_update.update(item_params)
+          render json: ItemSerializer.new(item_to_update), status: :accepted
+        else
+          render status: :not_found
+        end
       end
 
       private

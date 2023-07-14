@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Invoice < ApplicationRecord
-  validates_presence_of :status,
-                        :customer_id
+  validates :status,
+            :customer_id, presence: true
 
   belongs_to :customer
   has_many :transactions

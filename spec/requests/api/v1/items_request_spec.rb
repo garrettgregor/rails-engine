@@ -79,8 +79,8 @@ describe 'Items API' do
       merchant = create(:merchant)
 
       item_values = {
-        "name": "value1",
-        "description": "value2",
+        "name": 'value1',
+        "description": 'value2',
         "unit_price": 100.99,
         "merchant_id": merchant.id
       }
@@ -119,16 +119,16 @@ describe 'Items API' do
       merchant = create(:merchant)
       item_to_update = merchant.items.create!(
         {
-          name: "value1",
-          description: "value2",
+          name: 'value1',
+          description: 'value2',
           unit_price: 100.99,
           merchant_id: merchant.id
         }
       )
 
       item_updates = {
-        "name": "test1",
-        "description": "test2"
+        "name": 'test1',
+        "description": 'test2'
       }
 
       patch "/api/v1/items/#{item_to_update.id}", params: { item: item_updates }
@@ -180,7 +180,7 @@ describe 'Items API' do
 
       merchant_data = JSON.parse(response.body, symbolize_names: true)
       retrieved_merchant = merchant_data[:data]
-      
+
       expect(retrieved_merchant).to have_key(:id)
       expect(retrieved_merchant[:id].to_i).to eq(merchant.id)
 
@@ -198,7 +198,7 @@ describe 'Items API' do
     xit "can delete an items' associated invoice" do
       merchant = create(:merchant)
       item = create(:item, merchant_id: merchant.id)
-      invoice =
+        # add invoice
 
       delete "/api/v1/items/#{item.id}"
 
@@ -225,16 +225,16 @@ describe 'Items API' do
       merchant = create(:merchant)
       item_to_update = merchant.items.create!(
         {
-          name: "value1",
-          description: "value2",
+          name: 'value1',
+          description: 'value2',
           unit_price: 100.99,
           merchant_id: 120_987_234_587_090
         }
       )
 
       item_updates = {
-        "name": "test1",
-        "description": "test2"
+        "name": 'test1',
+        "description": 'test2'
       }
 
       patch "/api/v1/items/#{item_to_update.id}", params: { item: item_updates }

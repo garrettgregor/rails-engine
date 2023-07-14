@@ -6,9 +6,7 @@ class Item < ApplicationRecord
             :unit_price,
             :merchant_id, presence: true
 
-  # has_many :invoice_items
-  # has_many :invoices, through: :invoice_items
+  has_many :invoice_items
+  has_many :invoices, through: :invoice_items
   belongs_to :merchant
-
-  # enum status: [:disabled, :enabled]
 end

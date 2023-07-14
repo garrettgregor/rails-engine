@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  # Doesn't work: get '/api/v1/merchants/find', to: 'merchants/search#show'
+  # Question: Doesn't work: get '/api/v1/merchants/find', to: 'merchants/search#show'
 
   namespace :api do
     namespace :v1 do

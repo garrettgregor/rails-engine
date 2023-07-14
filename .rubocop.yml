@@ -8,7 +8,7 @@ Style/Documentation:
   Enabled: false
 
 Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context', 'it']
 
 Naming/VariableNumber:
   IgnoredMethods: ['describe', 'context', 'it']

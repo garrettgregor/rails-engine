@@ -198,7 +198,7 @@ describe 'Items API' do
     xit "can delete an items' associated invoice" do
       merchant = create(:merchant)
       item = create(:item, merchant_id: merchant.id)
-        # add invoice
+      # add invoice
 
       delete "/api/v1/items/#{item.id}"
 

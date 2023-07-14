@@ -5,10 +5,15 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  # Question: Doesn't work: get '/api/v1/merchants/find', to: 'merchants/search#show'
+
   namespace :api do
     namespace :v1 do
+      # Question: how to handroll this or use resources?
+      get '/merchants/find_all', to: 'merchants/search#index'
+      get '/merchants/find', to: 'merchants/search#show'
       resources :merchants, only: %i[index show] do
-        # namespace :merchants do
         resources :items, only: %i[index], controller: 'merchants/items'
       end
       resources :items, only: %i[index show create update destroy] do

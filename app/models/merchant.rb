@@ -8,4 +8,12 @@ class Merchant < ApplicationRecord
   has_many :invoices, through: :invoice_items
   has_many :customers, through: :invoices
   has_many :transactions, through: :invoices
+
+  def self.search(query)
+    where('name ILIKE ?', "%#{query}%").first
+  end
+
+  def self.search_all(query)
+    where('name ILIKE ?', "%#{query}%")
+  end
 end

@@ -89,6 +89,55 @@ describe 'Merchants API' do
         expect(item[:attributes][:merchant_id]).to eq(merchant.id)
       end
     end
+
+    it 'can find a single merchant which matches a search term' do
+      merchant = create(:merchant, name: 'Target')
+
+      get '/api/v1/merchants/find?name=Target'
+      expect(response).to have_http_status(:ok)
+
+      merchant_data = JSON.parse(response.body, symbolize_names: true)
+      returned_merchant = merchant_data[:data]
+
+      expect(returned_merchant).to have_key(:id)
+      expect(returned_merchant[:id].to_i).to eq(merchant.id)
+
+      expect(returned_merchant).to have_key(:type)
+      expect(returned_merchant[:type]).to eq('merchant')
+
+      expect(returned_merchant).to have_key(:attributes)
+      expect(returned_merchant[:attributes]).to be_a(Hash)
+
+      expect(returned_merchant[:attributes]).to have_key(:name)
+      expect(returned_merchant[:attributes][:name]).to be_a(String)
+      expect(returned_merchant[:attributes][:name]).to eq(merchant.name)
+    end
+
+    it 'can find all merchants that match a search term' do
+      create(:merchant, name: 'Target')
+      create(:merchant, name: 'Target1')
+
+      get '/api/v1/merchants/find_all?name=Target'
+      # Question: use 302?
+      expect(response).to have_http_status(:ok)
+
+      merchants_data = JSON.parse(response.body, symbolize_names: true)
+      returned_merchants = merchants_data[:data]
+
+      returned_merchants.each do |returned_merchant|
+        expect(returned_merchant).to have_key(:id)
+        expect(returned_merchant[:id].to_i).to be_an(Integer)
+
+        expect(returned_merchant).to have_key(:type)
+        expect(returned_merchant[:type]).to eq('merchant')
+
+        expect(returned_merchant).to have_key(:attributes)
+        expect(returned_merchant[:attributes]).to be_a(Hash)
+
+        expect(returned_merchant[:attributes]).to have_key(:name)
+        expect(returned_merchant[:attributes][:name]).to be_a(String)
+      end
+    end
   end
 
   context 'sad path' do

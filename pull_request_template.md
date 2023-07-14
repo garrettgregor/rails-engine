@@ -43,7 +43,7 @@ Checklist:
 - [ ] I have reviewed my code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have fully tested my code
-- [ ] I have rubcopped my code
+- [ ] I have rubocopped my code
 
 ### How do I feel about this?
 <!-- It's working: -->

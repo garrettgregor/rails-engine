@@ -93,7 +93,7 @@ describe 'Merchants API' do
     it 'can find a single merchant which matches a search term' do
       merchant = create(:merchant, name: 'Target')
 
-      get "/api/v1/merchants/find?name=Target"
+      get '/api/v1/merchants/find?name=Target'
       expect(response).to have_http_status(:ok)
 
       merchant_data = JSON.parse(response.body, symbolize_names: true)
@@ -114,10 +114,10 @@ describe 'Merchants API' do
     end
 
     it 'can find all merchants that match a search term' do
-      merchant_1 = create(:merchant, name: 'Target')
-      merchant_2 = create(:merchant, name: 'Target1')
+      create(:merchant, name: 'Target')
+      create(:merchant, name: 'Target1')
 
-      get "/api/v1/merchants/find_all?name=Target"
+      get '/api/v1/merchants/find_all?name=Target'
       # Question: use 302?
       expect(response).to have_http_status(:ok)
 

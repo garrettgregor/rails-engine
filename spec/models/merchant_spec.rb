@@ -15,7 +15,7 @@ describe Merchant do
     it { should have_many(:transactions).through(:invoices) }
   end
 
-  describe ".class methods" do
+  describe '.class methods' do
     let!(:merchant_1) { Merchant.create!(name: 'Target') }
     let!(:merchant_2) { Merchant.create!(name: 'Target1') }
     let!(:merchant_3) { Merchant.create!(name: 'Amazon') }

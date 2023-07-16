@@ -221,25 +221,28 @@ describe 'Items API' do
       expect(response).to have_http_status(:not_found)
     end
 
-    xit 'bad merchant id returns 404 when updating' do
+    it 'bad merchant id returns 404 when updating' do
       merchant = create(:merchant)
       item_to_update = merchant.items.create!(
         {
           name: 'value1',
           description: 'value2',
-          unit_price: 100.99,
-          merchant_id: 120_987_234_587_090
+          unit_price: 100.99
         }
       )
 
       item_updates = {
         "name": 'test1',
-        "description": 'test2'
+        "description": 'test2',
+        "merchant_id": 120_987_234_587_090
       }
 
       patch "/api/v1/items/#{item_to_update.id}", params: { item: item_updates }
 
       expect(response).to have_http_status(:not_found)
+      expect(item_to_update.name).to eq('value1')
+      expect(item_to_update.description).to eq('value2')
+      expect(item_to_update.merchant_id).to eq(merchant.id)
     end
   end
 end
